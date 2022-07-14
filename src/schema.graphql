@@ -1,0 +1,15 @@
+# define schema
+type Mutation {
+    addAnimal(name: String!, fact: String): Animal
+    updateAnimal(id: String!, name: String!, fact: String): Animal
+    getAnimalById(id: String!): Animal
+    deleteAnimalById(id: String!): Animal
+}
+type Query {
+   getAllAnimals: [Animal]
+}
+type Animal {
+    id: ID!
+    name: String!
+    fact: String
+}

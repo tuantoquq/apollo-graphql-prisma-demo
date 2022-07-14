@@ -1,0 +1,31 @@
+{
+  "name": "nodejs-graphql-prisma",
+  "version": "1.0.0",
+  "description": "Simple project with graphql and prisma",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./src/index.js",
+    "dev": "nodemon ./src/index.js",
+    "lint": "eslint .",
+    "lint:fix": "yarn lint --fix ./src",
+    "format": "prettier --write ./src"
+  },
+  "author": "tuantoquq",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^4.0.0",
+    "apollo-server": "^3.10.0",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "graphql": "^16.5.0",
+    "mysql2": "^2.3.3"
+  },
+  "type": "module",
+  "devDependencies": {
+    "eslint": "^8.19.0",
+    "eslint-config-prettier": "^8.5.0",
+    "nodemon": "^2.0.19",
+    "prettier": "^2.7.1",
+    "prisma": "^4.0.0"
+  }
+}
