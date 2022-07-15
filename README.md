@@ -11,5 +11,5 @@
     8. modify /prisma/schema.prisma file
     9. define query and mutation for grapql
     10. yarn prisma generate
+    11. yarn prisma db push
     11. start project and query with grapql on sand box apollo website
-    

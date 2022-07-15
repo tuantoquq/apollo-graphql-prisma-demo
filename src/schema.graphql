@@ -1,15 +1,42 @@
 # define schema
+scalar JSON
 type Mutation {
-    addAnimal(name: String!, fact: String): Animal
-    updateAnimal(id: String!, name: String!, fact: String): Animal
-    getAnimalById(id: String!): Animal
-    deleteAnimalById(id: String!): Animal
+    #animal mutation
+    addAnimal(name: String!, fact: String): Response
+    updateAnimal(id: Int!, name: String!, fact: String): Animal
+    getAnimalById(id: Int!): Animal
+    deleteAnimalById(id: Int!): Animal
+
+    #role mutation
+    addRole(name: String!): Role
+
+    #user mutation
+    register(email: String!, password: String!, fullName: String): Response
+    login(email: String!, password: String!): Response
+    getProfiles(id: Int!): User
 }
 type Query {
-   getAllAnimals: [Animal]
+    getAllAnimals: [Animal]
 }
 type Animal {
     id: ID!
     name: String!
     fact: String
+}
+type Role {
+    id: ID!
+    name: String!
+}
+type User {
+    id: ID!
+    email: String!
+    password: String!
+    role: Role!
+    fullName: String
+}
+
+type Response {
+    status: Int!
+    message: String!
+    data: JSON
 }
