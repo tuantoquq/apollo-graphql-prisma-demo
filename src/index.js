@@ -4,10 +4,7 @@ import express from 'express';
 import path from 'path';
 import 'dotenv/config';
 import resolvers from './resolvers.js';
-import { PrismaClient } from '@prisma/client';
-import { verifyToken } from './middleware/authJwt.js';
 
-const prisma = new PrismaClient();
 const __dirname = path.resolve();
 const app = express();
 const PORT = process.env.SERVER_PORT || 4000;
@@ -15,13 +12,7 @@ const PORT = process.env.SERVER_PORT || 4000;
 const server = new ApolloServer({
     typeDefs: readFileSync(path.join(__dirname, 'src/schema.graphql'), 'utf-8'),
     resolvers,
-    context: ({ req }) => {
-        return {
-            ...req,
-            prisma,
-            userId: req && req.headers.authorization ? verifyToken(req) : null,
-        };
-    },
+    context: ({ req }) => ({ req }),
 });
 await server.start();
 server.applyMiddleware({ app });

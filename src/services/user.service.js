@@ -2,18 +2,20 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { ResponseStatus } from '../constants/ResponseStatus.js';
 import CustomError from '../error/CustomError.js';
+import client from "../config/prismaClient.js";
+
 
 const { hashSync, compareSync } = bcrypt;
 const { sign } = jwt;
 
-export const register = async (parent, args, context) => {
+export const register = async (_, args) => {
     try {
-        const userRole = await context.prisma.role.findUnique({
+        const userRole = await client.role.findUnique({
             where: {
                 name: 'USER',
             },
         });
-        const newUser = await context.prisma.user.create({
+        const newUser = await client.user.create({
             data: {
                 email: args.email,
                 password: hashSync(args.password),
@@ -34,9 +36,9 @@ export const register = async (parent, args, context) => {
     }
 };
 
-export const login = async (parent, args, context) => {
+export const login = async (_, args) => {
     try {
-        const user = await context.prisma.user.findUnique({
+        const user = await client.user.findUnique({
             where: {
                 email: args.email,
             },

@@ -1,29 +1,26 @@
 import { ResponseStatus } from '../constants/ResponseStatus.js';
 import CustomError from '../error/CustomError.js';
+import client from '../config/prismaClient.js';
+import { verifyToken } from '../middleware/authJwt.js';
 
 // eslint-disable-next-line no-unused-vars
-export const getAllAnimals = async (parent, args, context) => {
+export const getAllAnimals = async (_, args) => {
     try {
-        const listAnimal = await context.prisma.animal.findMany();
+        const listAnimal = await client.animal.findMany();
         return listAnimal;
     } catch (err) {
         console.log(err);
     }
 };
 
-export const addAnimal = async (parent, args, context) => {
+export const addAnimal = async (_, args, context) => {
     try {
-        const userId = context.userId;
-        if (userId === null) {
-            return {
-                status: ResponseStatus.AUTH_ERROR,
-                message: 'No token provide',
-            };
-        }
-        const newAnimal = await context.prisma.animal.create({
+        const user = verifyToken(context);
+        const newAnimal = await client.animal.create({
             data: {
                 name: args.name,
                 fact: args.fact,
+                createBy: user.id
             },
         });
         return {
@@ -44,9 +41,9 @@ export const addAnimal = async (parent, args, context) => {
         };
     }
 };
-export const updateAnimal = async (parent, args, context) => {
+export const updateAnimal = async (_, args) => {
     try {
-        const animal = await context.prisma.animal.update({
+        const animal = await client.animal.update({
             data: {
                 name: args.name,
                 fact: args.fact,
@@ -60,9 +57,9 @@ export const updateAnimal = async (parent, args, context) => {
         console.log(err);
     }
 };
-export const deleteAnimalById = async (parent, args, context) => {
+export const deleteAnimalById = async (_, args) => {
     try {
-        const animal = await context.prisma.animal.delete({
+        const animal = await client.animal.delete({
             where: {
                 id: args.id,
             },
@@ -72,9 +69,9 @@ export const deleteAnimalById = async (parent, args, context) => {
         console.log(err);
     }
 };
-export const getAnimalById = async (parent, args, context) => {
+export const getAnimalById = async (_, args) => {
     try {
-        const animal = await context.prisma.animal.findUnique({
+        const animal = await client.animal.findUnique({
             where: {
                 id: args.id,
             },

@@ -11,6 +11,7 @@ model Animal {
   id   Int @id @unique @default(autoincrement())
   name String @unique
   fact String
+  createBy Int
 
   @@map("animal")
 }

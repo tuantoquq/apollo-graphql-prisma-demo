@@ -14,20 +14,20 @@ const CatchExpiredTokenError = (err) => {
     throw new CustomError(ResponseStatus.AUTH_ERROR, 'Unauthorized! Invalid token');
 };
 
-export const verifyToken = async (req) => {
-    let bearerToken = req.headers.authorization;
+export const verifyToken = (context) => {
+    let bearerToken = context.req.headers.authorization;
     if (bearerToken !== undefined && bearerToken.startsWith('Bearer ')) {
-        let token = req.headers.authorization.split(' ')[1];
+        let token = context.req.headers.authorization.split(' ')[1];
         if (!token) {
             throw new CustomError(ResponseStatus.AUTH_ERROR, 'No token provide');
         }
 
-        verify(token, process.env.ACCESS_JWT_SECRET, (err, decoded) => {
-            if (err) {
-                return CatchExpiredTokenError(err);
-            }
-            return decoded.id;
-        });
+        try{
+            const user = verify(token, process.env.ACCESS_JWT_SECRET);
+            return user;
+        }catch(err){
+            CatchExpiredTokenError(err);
+        }
     } else {
         throw new CustomError(ResponseStatus.AUTH_ERROR, 'Invalid token provide');
     }
