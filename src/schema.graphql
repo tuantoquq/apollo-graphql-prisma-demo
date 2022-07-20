@@ -4,8 +4,8 @@ type Mutation {
     #animal mutation
     addAnimal(name: String!, fact: String): Response
     updateAnimal(id: Int!, name: String!, fact: String): Animal
-    getAnimalById(id: Int!): Animal
     deleteAnimalById(id: Int!): Animal
+    
 
     #role mutation
     addRole(name: String!): Role
@@ -13,10 +13,13 @@ type Mutation {
     #user mutation
     register(email: String!, password: String!, fullName: String): Response
     login(email: String!, password: String!): Response
-    getProfiles(id: Int!): User
 }
 type Query {
     getAllAnimals: [Animal]
+    searchAnimal(key: String!): Response
+    getAnimalById(id: Int!): Animal
+    getProfiles(id: Int!): User
+    getAllWithPagination(offset: Int, limit: Int): Response
 }
 type Animal {
     id: ID!

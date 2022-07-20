@@ -6,15 +6,19 @@ import {
     updateAnimal,
     deleteAnimalById,
     getAnimalById,
+    searchAnimal,
+    getAllWithPagination
 } from './services/animal.service.js';
 
 const resolvers = {
     Query: {
         getAllAnimals,
+        searchAnimal,
+        getAnimalById,
+        getAllWithPagination
     },
     Mutation: {
         addAnimal,
-        getAnimalById,
         updateAnimal,
         deleteAnimalById,
         addRole,

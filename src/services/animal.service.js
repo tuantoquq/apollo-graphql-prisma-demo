@@ -79,6 +79,7 @@ export const getAnimalById = async (_, args) => {
                 id: true,
                 name: true,
                 fact: true,
+                createBy: true
             },
         });
         return animal;
@@ -86,3 +87,54 @@ export const getAnimalById = async (_, args) => {
         console.log(err);
     }
 };
+
+export const searchAnimal = async (_ ,args ) => {
+    try {
+        const listAnimal = await client.animal.findMany({
+            where: {
+                OR: [
+                    {
+                        name: {
+                            contains: args.key
+                        }
+                    },
+                    {
+                        fact: {
+                            contains: args.key
+                        }
+                    }
+                ]
+            }
+        });
+        return {
+            status: ResponseStatus.SUCCESS,
+            message: 'search animal successfully',
+            data: listAnimal,
+        };
+    } catch(err) {
+        return {
+            status: ResponseStatus.OTHER_ERROR,
+            message: err.message,
+        };
+    }
+}
+export const getAllWithPagination = async (_ , args) => {
+    try{
+        const offset = args.offset === undefined ? 1 : args.offset;
+        const limit = args.limit === undefined ? 10 : args.limit;
+        const listAnimal = await client.animal.findMany({
+            skip: (offset-1)*limit,
+            take: limit
+        });
+        return {
+            status: ResponseStatus.SUCCESS,
+            message: "get animal with pagination successfully",
+            data: listAnimal
+        };
+    }catch(err){
+        return {
+            status: ResponseStatus.OTHER_ERROR,
+            message: err.message
+        };
+    }
+}
